@@ -1,4 +1,5 @@
-﻿using ControleDeDespesas.Models;
+﻿using ControleDeDespesas.DTOs;
+using ControleDeDespesas.Models;
 using ControleDeDespesas.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -16,14 +17,12 @@ namespace ControleDeDespesas.Controllers
             _despesaService = despesaService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
-        }
+            var listDespesaDto = new ListDespesaDTO();
+            listDespesaDto.Items = await _despesaService.FindBy(listDespesaDto.DataInicial, listDespesaDto.DataFinal);
 
-        public IActionResult Privacy()
-        {
-            return View();
+            return View(listDespesaDto);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
